@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<br />
+<br />
+<div class="jumbotron">
+    <label style="font-weight:900;font-size:20px;">Upload File</label>
+    <br />
+        @if (ViewBag.Error != null)
+        {
+            @ViewBag.Error;
+        }
+
+    <div class="row">
+        @using (Html.BeginForm("UploadExcel", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+        <div class="col-md-4">
+            <input type="file" name="excelFile" />
+        </div>
+        <div class="col-md-4">
+            <button type="submit">Upload</button>
+        </div>
+        
+           
+        }
+    </div>
+</div>

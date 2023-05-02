@@ -1,0 +1,122 @@
+﻿
+@using Assignment.Models
+@using Newtonsoft.Json
+@model BarGraphViewModel
+@{
+    ViewBag.Title = "ExcelData";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Top 5 Scores</h2>
+        <table border="1">
+            <tr style="background-color:aqua">
+                <th>Name</th>
+                <th>Score</th>
+            </tr>
+            @foreach (final item in ViewBag.TopFive)
+            {
+                <tr>
+                    <td style="text-align: center; background-color: forestgreen">@item.AttributeLabel</td>
+                    <td style="text-align: center; background-color: forestgreen">@item.Score</td>
+                </tr>
+            }
+        </table>
+    </div>
+    <div class="col-md-6">
+        <h2>Bottom 5 Scores</h2>
+        <table border="1">
+            <tr style="background-color:aqua">
+                <th>Name</th>
+                <th>Score</th>
+            </tr>
+            @foreach (final item in ViewBag.BottomFive)
+            {
+                <tr>
+                    <td style="text-align:center; background-color:red">@item.AttributeLabel</td>
+                    <td style="text-align: center; background-color: red">@item.Score</td>
+                </tr>
+            }
+        </table>
+
+
+    </div>
+
+</div>
+
+
+<div class="col-md-6" style="width: 50%">
+    <canvas id="myChart"></canvas>
+</div>
+<div class="col-md-6" style="width: 50%">
+    <canvas id="myChartbotom"></canvas>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    var topFiveData = @Html.Raw(JsonConvert.SerializeObject(Model.TopFive));
+   
+
+    var data = {
+        labels: Object.keys(topFiveData),
+        datasets: [
+            {
+                label: 'Top Five',
+                data: Object.values(topFiveData),
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    var chart = new Chart('myChart', {
+        type: 'bar',
+        data: data,
+        options: options
+    });
+</script>
+<script>
+   
+    var bottomFiveData = @Html.Raw(JsonConvert.SerializeObject(Model.BottomFive));
+
+    var data = {
+        labels: Object.keys(bottomFiveData),
+        datasets: [
+           
+            {
+                label: 'Bottom Five',
+                data: Object.values(bottomFiveData),
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgba(255, 99, 132, 1)',
+                borderWidth: 1
+            }
+        ]
+    };
+
+    var options = {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        }
+    };
+
+    var chart = new Chart('myChartbotom', {
+        type: 'bar',
+        data: data,
+        options: options
+    });
+</script>
